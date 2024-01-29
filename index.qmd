@@ -1,6 +1,6 @@
 ---
-title: "Quarto Presentations"
-subtitle: "UKCEH template"
+title: "Introduction to Statistics"
+subtitle: "Data, Models & Probability Theory"
 author: "Peter Levy"
 date: "UKCEH Edinburgh </br> `r Sys.Date()`"
 format:
@@ -22,395 +22,645 @@ library(quarto)
 quarto_render("./index.qmd")
 ```
 
-
-## Hello, There
-
-This presentation will show you examples of what you can do with Quarto and [Reveal.js](https://revealjs.com), including:
-
--   Presenting code and LaTeX equations
--   Including computations in slide output
--   Image, video, and iframe backgrounds
--   Fancy transitions and animations
--   Printing to PDF
-
-...and much more
-
 # 1st level header on Bright Green {background="#37a635"}
-# 1st level header on Garden Green {background="#00883c"}
 # 1st level header on Teal {background="#0383a4"}
-## 2nd level header
-### 3rd level header
 
-## Pretty Code {auto-animate="true"}
+## What we will cover {.smaller}
+- terminology
+- probability theory - why the normal distribution is "normal"
+- linear regression and friends (GLM, GLMM, GAM, ...?#!)
+- p values and null-hypothesis testing - why it is often a bad idea
+- Machine Learning - "statistics on steroids"
+- the Bayesian mind meld.
 
--   Over 20 syntax highlighting themes available
--   Default theme optimized for accessibility
+# Terminology {background="#37a635"}
 
-``` r
-# Define a server for the Shiny app
-function(input, output) {
-  
-  # Fill in the spot we created for a plot
-  output$phonePlot <- renderPlot({
-    # Render a barplot
-  })
-}
-```
+## Confusion is normal
+::: incremental
+![](images/confusion.png){fig-align="center" width="650"}
 
-## Code Animations {auto-animate="true"}
-
--   Over 20 syntax highlighting themes available
--   Default theme optimized for accessibility
-
-``` r
-# Define a server for the Shiny app
-function(input, output) {
-  
-  # Fill in the spot we created for a plot
-  output$phonePlot <- renderPlot({
-    # Render a barplot
-    barplot(WorldPhones[,input$region]*1000, 
-            main=input$region,
-            ylab="Number of Telephones",
-            xlab="Year")
-  })
-}
-```
-
-## Line Highlighting
-
--   Highlight specific lines for emphasis
--   Incrementally highlight additional lines
-
-``` {.python code-line-numbers="4-5|7|10"}
-import numpy as np
-import matplotlib.pyplot as plt
-
-r = np.arange(0, 2, 0.01)
-theta = 2 * np.pi * r
-fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-ax.plot(theta, r)
-ax.set_rticks([0.5, 1, 1.5, 2])
-ax.grid(True)
-plt.show()
-```
-
-## Executable Code
-
-```{r}
-#| echo: true
-#| fig-width: 10
-#| fig-height: 4.5
-library(ggplot2)
-ggplot(mtcars, aes(hp, mpg, color = am)) +
-  geom_point() +
-  geom_smooth(formula = y ~ x, method = "loess")
-```
-
-::: footer
-Learn more: [Executable Code](https://quarto.org/docs/presentations/revealjs/#executable-code)
+- Get comfortable with confusion
+- Ask questions!
 :::
 
-## LaTeX Equations
+## The problem with statistics ... {auto-animate="true"}
+{{< video https://youtu.be/u5puzYBgaXM?t=64 
+ width="100%" height="85%"
+>}}
 
-[MathJax](https://www.mathjax.org/) rendering of equations to HTML
+## Science and Models
+The core of the scientific process involves:
+
+- formulating models of how the world works
+- comparing with data to assess their validity
+
+**Inference** is the process of estimating models, parameters, and their uncertainties, using data
+
+- how we go from evidence to a conclusion
+
+## Terminology
+- hypothesis = a statement of how a system works
+    - e.g. CO$_2$ causes global warming
+- model = mathematical representation of how a system works
+    - e.g. Temperature = f(CO$_2$)
+- parameter = numerical constant within a model
+    - e.g. $T = \beta  CO_2$
+    - true value unknown, but estimated with uncertainty
+
+## Likelihood and probability
+"*Likelihood*" and "*probability*" used interchangeably in common speech.
+
+Likelihood has a specific meaning in statistics:
+
+- parameters have a likelihood:
+- $L[\mu, \sigma] = P[\mathrm{data} | \mu, \sigma]$
+- equal to the probability of the data, given those parameters
+
+# The Normal Distribution {background="#37a635"}
+## Demonstrating the Normal Distribution
+
+-   a function to average random numbers
+
+
+``` {.r code-line-numbers="2|3|4"}
+# function to add n uniform random_numbers between x_lower and x_upper
+average_random_numbers <- function(n_numbers, x_lower = 100, x_upper = 200) {
+  random_numbers <- runif(n_numbers, x_lower, x_upper)
+  return(mean(random_numbers))
+}
+```
+
+
+##
+{{< video https://youtu.be/zeJD6dqJ5lo?t=113 
+ width="100%" height="100%"
+>}}
+
+# Linear regression and friends {background="#37a635"}
+
+## Terminology
+
+- Linear Regression
+- Linear Models
+- Regression modelling
+- the General Linear Model includes:
+    - t-test
+    - ANOVA
+    - multivariate regression
+
+::: incremental
+We want to predict one thing (*y*) on the basis of another (*x*)
+:::
+
+## Terminology
 
 ::: columns
 ::: {.column width="40%"}
-``` tex
-\begin{gather*}
-a_1=b_1+c_1\\
-a_2=b_2+c_2-d_2+e_2
-\end{gather*}
-
-\begin{align}
-a_{11}& =b_{11}&
-  a_{12}& =b_{12}\\
-a_{21}& =b_{21}&
-  a_{22}& =b_{22}+c_{22}
-\end{align}
-```
+-   **y**: response, outcome, dependent variable
+-   **x**: predictor, covariate, independent variable - used to help understand the variability in the response
 :::
 
 ::: {.column width="60%"}
-```{=tex}
-\begin{gather*}
-a_1=b_1+c_1\\
-a_2=b_2+c_2-d_2+e_2
-\end{gather*}
+```{r}
+#| out.width: "100%"
+df <- read.csv(url("https://raw.githubusercontent.com/NERC-CEH/beem_data/main/trees.csv"))
+df$basal_area <- pi *(df$dbh / 2)^2
+library(ggplot2)
+p <- ggplot(data = df, 
+       mapping = aes(x = basal_area, y = tree_mass)) +
+  geom_point(alpha = 0.5) + 
+  geom_smooth(method = "lm", color = "purple", se = FALSE) +
+  labs(
+    x = "Basal area, cm2" , 
+    y = "Tree mass, kg"
+    )
+p
 ```
-```{=tex}
-\begin{align}
-a_{11}& =b_{11}&
-  a_{12}& =b_{12}\\
-a_{21}& =b_{21}&
-  a_{22}& =b_{22}+c_{22}
-\end{align}
-```
 :::
 :::
 
-::: footer
-Learn more: [LaTeX Equations](https://quarto.org/docs/authoring/markdown-basics.html#equations)
-:::
+## Linear model {#regression-model-1}
 
-## Column Layout {.smaller}
+A function that describes a linear relationship between the response, $y$, and the predictor, $x$.
 
-Arrange content into columns of varying widths:
+$$\begin{aligned} y &= \color{black}{\textbf{Model}} + \text{Error} \\[6pt]
+&= \color{black}{\mathbf{f(\theta, x)}} + \epsilon \\[6pt]
+&= \mathrm{intercept} + \mathrm{slope} \cdot x + \epsilon \\[6pt] 
+&= \alpha + \beta x + \epsilon \\[6pt] 
+\theta &= (\alpha, \beta) \\[6pt] 
+\end{aligned}$$
+
+## Linear model {#regression-model-2}
+
+A function that describes a linear relationship between the response, $y$, and the predictor, $x$.
+
+$$\begin{aligned} y &= \color{black}{\textbf{Model}} + \text{Error} \\[6pt]
+&= \color{black}{\mathbf{f(\theta, x)}} + \epsilon \\[6pt]
+&= \mathrm{intercept} + \mathrm{slope} \cdot x + \epsilon \\[6pt] 
+&= \beta_0 + \beta_1 x + \epsilon \\[6pt] 
+\theta &= (\beta_0, \beta_1) \\[6pt] 
+\end{aligned}$$
+
+## Linear model
 
 ::: columns
-::: {.column width="35%"}
-#### Motor Trend Car Road Tests
-
-The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles.
+::: {.column width="30%"}
+$$
+\begin{aligned} y &= \color{purple}{\textbf{Model}} + \text{Error} \\[8pt]
+&= \color{purple}{\mathbf{f(\theta, x)}} + \epsilon \\[8pt]
+&= \color{purple}{\alpha + \beta x} + \epsilon \\[8pt]
+\end{aligned}
+$$
 :::
 
-::: {.column width="3%"}
-:::
-
-::: {.column width="62%"}
+::: {.column width="70%"}
 ```{r}
-knitr::kable(head(mtcars)[,c("mpg",	"cyl", "disp", "hp", "wt")])
+m <- lm(tree_mass ~ basal_area, data = df)
+
+p <- ggplot(data = df, 
+       mapping = aes(x = basal_area, y = tree_mass)) +
+  geom_point(alpha = 0.5) + 
+  geom_smooth(method = "lm", color = "purple", se = FALSE) +
+  labs(x = "x", y = "y") +
+  theme(
+    axis.text = element_blank(),
+    axis.ticks.x = element_blank(), 
+    axis.ticks.y = element_blank()
+    )
+p
 ```
 :::
 :::
 
-::: footer
-Learn more: [Multiple Columns](https://quarto.org/docs/presentations/revealjs/#multiple-columns)
+## Linear model + residual error
+
+::: columns
+::: {.column width="30%"}
+$$\begin{aligned} y &= \color{purple}{\textbf{Model}} + \color{blue}{\textbf{Error}} \\[8pt]
+&= \color{purple}{\mathbf{f(\theta, x)}} + \color{blue}{\boldsymbol{\epsilon}} \\[8pt]
+&= \color{purple}{\alpha + \beta x} + \color{blue}{\boldsymbol{\epsilon}} \\[8pt]
+ \end{aligned}$$
 :::
 
-## Incremental Lists
-
-Lists can optionally be displayed incrementally:
-
-::: incremental
--   First item
--   Second item
--   Third item
-:::
-
-. . .
-
-<br/> Insert pauses to make other types of content display incrementally.
-
-## Fragments
-
-Incremental text display and animation with fragments:
-
-<br/>
-
-::: {.fragment .fade-in}
-Fade in
-:::
-
-::: {.fragment .fade-up}
-Slide up while fading in
-:::
-
-::: {.fragment .fade-left}
-Slide left while fading in
-:::
-
-::: {.fragment .fade-in-then-semi-out}
-Fade in then semi out
-:::
-
-. . .
-
-::: {.fragment .strike}
-Strike
-:::
-
-::: {.fragment .highlight-red}
-Highlight red
-:::
-
-## Slide Backgrounds {background="#43464B"}
-
-Set the `background` attribute on a slide to change the background color (all CSS color formats are supported).
-
-Different background transitions are available via the `background-transition` option.
-
-## Media Backgrounds {background="#43464B" background-image="images/milky-way.jpeg"}
-
-You can also use the following as a slide background:
-
--   An image: `background-image`
-
--   A video: `background-video`
-
--   An iframe: `background-iframe`
-
-## Auto-Animate {auto-animate="true" auto-animate-easing="ease-in-out"}
-
-Automatically animate matching elements across slides with Auto-Animate.
-
-::: r-hstack
-::: {data-id="box1" auto-animate-delay="0" style="background: #2780e3; width: 200px; height: 150px; margin: 10px;"}
-:::
-
-::: {data-id="box2" auto-animate-delay="0.1" style="background: #3fb618; width: 200px; height: 150px; margin: 10px;"}
-:::
-
-::: {data-id="box3" auto-animate-delay="0.2" style="background: #e83e8c; width: 200px; height: 150px; margin: 10px;"}
-:::
-:::
-
-## Auto-Animate {auto-animate="true" auto-animate-easing="ease-in-out"}
-
-Automatically animate matching elements across slides with Auto-Animate.
-
-::: r-stack
-::: {data-id="box1" style="background: #2780e3; width: 350px; height: 350px; border-radius: 200px;"}
-:::
-
-::: {data-id="box2" style="background: #3fb618; width: 250px; height: 250px; border-radius: 200px;"}
-:::
-
-::: {data-id="box3" style="background: #e83e8c; width: 150px; height: 150px; border-radius: 200px;"}
-:::
-:::
-
-## Slide Transitions {.smaller}
-
-The next few slides will transition using the `slide` transition
-
-| Transition | Description                                                            |
-|------------|------------------------------------------------------------------------|
-| `none`     | No transition (default, switch instantly)                              |
-| `fade`     | Cross fade                                                             |
-| `slide`    | Slide horizontally                                                     |
-| `convex`   | Slide at a convex angle                                                |
-| `concave`  | Slide at a concave angle                                               |
-| `zoom`     | Scale the incoming slide so it grows in from the center of the screen. |
-
-
-## Tabsets {.smaller .scrollable transition="slide"}
-
-::: panel-tabset
-### Plot
-
-```{r}
-library(ggplot2)
-ggplot(mtcars, aes(hp, mpg, color = am)) +
-  geom_point() +
-  geom_smooth(formula = y ~ x, method = "loess")
-```
-
-### Data
-
-```{r}
-knitr::kable(mtcars)
-```
-:::
-
-## Interactive Slides {.smaller transition="slide"}
-
-Include Jupyter widgets and htmlwidgets in your presentations
-
+::: {.column width="70%"}
 ```{r}
 #| echo: false
-#| fig-height: 5
-library(leaflet)
-leaflet() %>%
-  addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+p + geom_segment(aes(x = basal_area, xend = basal_area, 
+                     y = tree_mass, yend = predict(m)), 
+                     color = "blue")
+```
+:::
+:::
+
+## Linear model  + residual error
+
+::: columns
+::: {.column width="30%"}
+$$\begin{aligned} y &= \color{purple}{\textbf{Model}} + \color{blue}{\textbf{Error}} \\[8pt]
+&= \color{purple}{\mathbf{f(\theta, x)}} + \color{blue}{\boldsymbol{\epsilon}} \\[8pt]
+&= \color{purple}{\alpha + \beta x} + \color{blue}{\boldsymbol{\epsilon}} \\[8pt]
+ \end{aligned}$$
+:::
+
+::: {.column width="70%"}
+```{r}
+#| echo: false
+ggplot(df, aes(x = predict(m) - tree_mass)) +
+  geom_histogram(alpha = 0.95, fill = "royal blue") + xlab("Residual, kg")
+```
+:::
+:::
+
+## Uses
+- Prediction
+- Extrapolation
+- Associations / correlation
+- Causal inference
+
+## Terminology
+Regression slopes $\beta$ are often referred to as **effects**
+
+- e.g. $\beta = 1.5$ is the numerical effect of $x$ on $y$ in the model
+- but *effect* implies causality
+- better called *coefficient* to be neutral
+
+## Frequentist linear regression
+
+- find the best-fit line which minimises residuals
+- point estimate for the relationship between *x* and *y*
+- assume Gaussian approximation for confidence intervals
+- test null hypothesis of zero slope $\beta = 0$
+
+```{r}
+#| out.width: "60%"
+p <- ggplot(data = df, 
+       mapping = aes(x = basal_area, y = tree_mass)) +
+  geom_point(alpha = 0.5) + 
+  geom_smooth(method = "lm", color = "purple", se = FALSE) +
+  labs(
+    x = "Basal area, cm2" , 
+    y = "Tree mass, kg"
+    )
+p
 ```
 
-## Preview Links
+## Bayesian linear regression
 
-Navigate to hyperlinks without disrupting the flow of your presentation.
+- find the (posterior) distribution of plausible relationships between *x* and *y*
+    - i.e. $P(\theta | y) \propto P(\theta) P(y | \theta)$
+- use Bayes rule via MCMC
+- no Gaussian assumption needed for parameters (only measurement error)
+- hypothesis test is irrelevant - posterior $\theta$ captures all information
 
-Use the `preview-links` option to open links in an iframe on top of your slides. Try clicking the link below for a demonstration:
 
-::: {style="text-align: center; margin-top: 1em"}
-[Matplotlib: Visualization with Python](https://matplotlib.org/){preview-link="true" style="text-align: center"}
+## Assumptions
+
+::: incremental
+- **L**inearity
+- **0** zero error in $x$
+- **I**ndependent samples
+- **N**ormally-distributed measurement error
+- **C**onstant variance across the range in $x$
+- **loth** to forget these
+- mnemonic: **L0INCloth**
 :::
 
-## Themes
+## Extensions to Linear Modelling
 
-10 Built-in Themes (or [create your own](https://quarto.org/docs/presentations/revealjs/themes.html#creating-themes))
+When the assumptions are not met ...
 
-::: {layout-ncol="2"}
-![](images/moon.png)
-
-![](images/sky.png)
+::: incremental
+- **L**inearity - Generalised Linear Models; General Additive Models
+- **0** zero error in $x$ - uncertainty propagation by MC simulation
+- **I**ndependent samples - hierarchical & mixed-effect models; spatial/time series
+- **N**ormally-distributed measurement error - Generalised Linear Models
 :::
 
-## Easy Navigation
 
-::: {style="margin-bottom: 0.9em;"}
-Quickly jump to other parts of your presentation
+# Measurement and uncertainty {background="#37a635"}
+
+<!--- {Terminology -->
+## Terminology for measurements
+::: columns
+::: incremental
+::: {.column width="35%"}
+- "The Facts"
+- Evidence
+- Observations
+- Measurements
+- Data
 :::
 
-::: {layout="[1, 20]"}
-![](images/presentation-menu.png){width="41"}
-
-Toggle the slide menu with the menu button (bottom left of slide) to go to other slides and access presentation tools.
+::: {.column width="65%"}
+:::
+:::
 :::
 
-You can also press `m` to toggle the menu open and closed.
-
-## Chalkboard {chalkboard-buttons="true"}
-
-::: {style="margin-bottom: 0.9em;"}
-Free form drawing and slide annotations
+## Terminology for measurements
+::: columns
+::: {.column width="35%"}
+- "The Facts"
+- Evidence
+- Observations
+- Measurements
+- Data
 :::
 
-::: {layout="[1, 20]"}
-![](images/presentation-chalkboard.png){width="41"}
+::: {.column width="65%"}
+All the same thing, increasing uncertainty.
+![](images/down_arrow.png)
 
-Use the chalkboard button at the bottom left of the slide to toggle the chalkboard.
 :::
-
-::: {layout="[1, 20]"}
-![](images/presentation-notes-canvas.png){width="41"}
-
-Use the notes canvas button at the bottom left of the slide to toggle drawing on top of the current slide.
 :::
+<!--- } -->
 
-You can also press `b` to toggle the chalkboard or `c` to toggle the notes canvas.
-
-## Point of View
-
-Press `o` to toggle overview mode:
-
-![](images/overview-mode.png){.border}
-
-Hold down the `Alt` key (or `Ctrl` in Linux) and click on any element to zoom towards it---try it now on this slide.
-
-
-## Speaker View
-
-Press `s` (or use the presentation menu) to open speaker view
-
-![](images/speaker-view.png){fig-align="center" style="border: 3px solid #dee2e6;" width="780"}
-
-## Authoring Tools {.smaller}
-
-Live side-by-side preview for any notebook or text editor including Jupyter and VS Code
+<!--- {Mmnts are proxies With diagram for simple obs error-->
+## Measurements and uncertainty
+Measurements are a proxy for true process of interest. 
+Connection between the two can be:
 
 ::: columns
 ::: {.column width="50%"}
-![](images/jupyter-edit.png){.border .border-thick}
+- sample from population (sampling error)
+- imperfect measurements (measurement error)
 :::
 
 ::: {.column width="50%"}
-![](images/jupyter-preview.png){.border .border-thick}
+```{r, fig.width = 4}
+library(DiagrammeR)
+grViz("
+digraph G {
+	fontname='Helvetica,Arial,sans-serif'
+	node [fontname='Helvetica,Arial,sans-serif']
+	edge [fontname='Helvetica,Arial,sans-serif']
+
+	subgraph cluster_0 {
+		node [style=filled];
+		a3;
+		label = 'Observed';
+		color=blue
+	}
+
+	subgraph cluster_1 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		b3 [dir=back];
+		label = 'True \n(unobserved)';
+	}
+
+	subgraph cluster_2 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		c3;
+		label = 'Error';
+	}
+  
+  a3[label = 'Q@_{obs}'];
+  b3[label = 'Q'];  
+  c3[label = '\u03c3@_{Q}'];
+  
+	b3 -> a3;
+	c3 -> a3;
+}
+")
+```
 :::
 :::
+<!--- } -->
 
-## Authoring Tools {.smaller}
+<!--- {With diagram for proxy obs error 1-->
+## Measurements and uncertainty
+Measurements are a proxy for true process of interest. 
+Connection between the two can be:
 
-RStudio includes an integrated presentation preview pane
+::: columns
+::: {.column width="50%"}
+- proxy variables
+    - true variable is hard to measure but can be approximated
+:::
 
-![](images/rstudio.png){.border width="900"}
+::: {.column width="50%"}
+```{r, fig.width = 4}
+grViz("
+digraph G {
+	fontname='Helvetica,Arial,sans-serif'
+	node [fontname='Helvetica,Arial,sans-serif']
+	edge [fontname='Helvetica,Arial,sans-serif']
 
+	subgraph cluster_0 {
+		node [style=filled];
+		a2 -> a3 [style = 'dotted', arrowhead = 'none'];
+		label = 'Observed';
+		color=blue
+	}
 
-## And More...
+	subgraph cluster_1 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		b2 -> b3 [dir=back];
+		label = 'True \n(unobserved)';
+	}
 
--   [Touch](https://quarto.org/docs/presentations/revealjs/advanced.html#touch-navigation) optimized (presentations look great on mobile, swipe to navigate slides)
--   [Footer & Logo](https://quarto.org/docs/presentations/revealjs/#footer-logo) (optionally specify custom footer per-slide)
--   [Auto-Slide](https://quarto.org/docs/presentations/revealjs/presenting.html#auto-slide) (step through slides automatically, without any user input)
--   [Multiplex](https://quarto.org/docs/presentations/revealjs/presenting.html#multiplex) (allows your audience to follow the slides of the presentation you are controlling on their own phone, tablet or laptop).
+	subgraph cluster_2 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		c2 -> c3 [style = 'invis'];
+		label = 'Error';
+	}
+  
+  a2[label = 'h@_{obs}'];
+  a3[label = 'Q@_{obs}'];
+  
+  b2[label = 'h'];
+  b3[label = 'Q'];  
 
+  c2[label = '\u03c3@_{h}'];
+  c3[label = '\u03c3@_{Q}'];
+  
+	b2 -> a2;
+	c2 -> a2;
+	b3 -> a3;
+	c3 -> a3;
+}
+")
+```
+:::
+:::
+<!--- } -->
+
+<!--- {An example:-->
+## Measuring stream flow
+
+![\label{fig:streamgauge} The stream flow rate $Q$ is the product of the stream cross-sectional area and its velocity. A pressure transducer continuously records stream height $h$ via the pressure, $P_{\mathrm{stream}}$.](images/streamgauge1.png)
+
+<!--- } -->
+
+<!--- {Streamflow example -->
+## Measuring streamflow
+>- We would typically say we have "measurements of streamflow"
+>- But we actually have measurements of stream height
+>- or rather water pressure ...
+>- or rather pressure transducer output voltage ...
+>- or rather data logger measurements of voltage.
+<!--- } -->
+
+<!--- {Streamflow example -->
+## Streamflow example
+We have a series of four linear models:
+
+\begin{align*}
+Q_{flow}   =& \beta_1 + \beta_2 h_{stream} + \epsilon_1 \\
+h_{stream} =& \beta_3 + \beta_4 P_{sensor} + \epsilon_2 \\
+P_{sensor} =& \beta_5 + \beta_6 V_{sensor} + \epsilon_3 \\
+V_{sensor} =& \beta_7 + \beta_8 V_{logger} + \epsilon_4
+\end{align*}
+
+We effectively assume these models are perfect and the error terms $\epsilon$ 1-4 are zero.
+
+This is a relatively simple case, and some of these errors may well be negligible.
+Many cases are not so simple.
+<!--- } -->
+
+<!--- {Streamflow example -->
+## Streamflow example
+We can substitute one model in another:
+
+\begin{align*}  \label{eq:strr}
+Q_{flow}   =& \beta_1 + \beta_2 (\beta_3 + \beta_4 P_{sensor} + \epsilon_2) + \epsilon_1 \\
+P_{sensor} =& \beta_5 + \beta_6 V_{sensor} + \epsilon_3 \\
+V_{sensor} =& \beta_7 + \beta_8 V_{logger} + \epsilon_4
+\end{align*}
+
+to give a single model:
+
+\begin{align*}  \label{eq:stream3}
+Q_{flow} = \beta_1 +& \beta_2 (\beta_3 + \beta_4 (\beta_5 + \beta_6 (\beta_7 + \beta_8 V_{logger}  \\
+         +& \epsilon_4) + \epsilon_3) + \epsilon_2) + \epsilon_1
+\end{align*}
+<!--- } -->
+
+<!--- {With diagram for proxy obs error 3 -->
+## Measurements and uncertainty
+Measurements are a proxy for true process of interest. Connection between the two can be:
+
+::: columns
+::: {.column width="50%"}
+- proxy variables
+    - true variable is hard to measure but can be approximated
+:::
+
+::: {.column width="50%"}
+```{r, fig.width = 4}
+grViz("
+digraph G {
+	fontname='Helvetica,Arial,sans-serif'
+	node [fontname='Helvetica,Arial,sans-serif']
+	edge [fontname='Helvetica,Arial,sans-serif']
+
+	subgraph cluster_0 {
+		node [style=filled];
+		a0 -> a1 -> a2 -> a3 [style = 'dotted', arrowhead = 'none'];
+		label = 'Observed';
+		color=blue
+	}
+
+	subgraph cluster_1 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		b0 -> b1 -> b2 -> b3 [dir=back];
+		label = 'True \n(unobserved)';
+	}
+
+	subgraph cluster_2 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		c0 -> c1 -> c2 -> c3 [style = 'invis'];
+		label = 'Error';
+	}
+  
+  a0[label = 'V@_{obs}'];
+  a1[label = 'P@_{obs}'];
+  a2[label = 'h@_{obs}'];
+  a3[label = 'Q@_{obs}'];
+  
+  b0[label = 'V'];
+  b1[label = 'P'];
+  b2[label = 'h'];
+  b3[label = 'Q'];  
+
+  c0[label = '\u03c3@_{V}'];
+  c1[label = '\u03c3@_{P}'];
+  c2[label = '\u03c3@_{h}'];
+  c3[label = '\u03c3@_{Q}'];
+  
+	b0 -> a0;
+	c0 -> a0;
+	b1 -> a1;
+	c1 -> a1;
+	b2 -> a2;
+	c2 -> a2;
+	b3 -> a3;
+	c3 -> a3;
+}
+")
+```
+:::
+:::
+<!--- } -->
+
+<!--- {Upscaling -->
+## Uncertainty in upscaling
+Often, true process of interest is a larger-scale property (e.g. annual sum, regional mean)
+
+::: columns
+::: {.column width="50%"}
+- integration 
+- interpolation / extrapolation, 
+- accounting for small-scale heterogeneity
+- adds additional modelling steps
+:::
+
+::: {.column width="50%"}
+![](images/Crichton_Fn2o_bubblePlot_byDate.png)
+:::
+:::
+<!--- } -->
+
+<!--- {Ignoring -->
+## Ignoring measurement error has consequences
+But uncertainty often not propagated. Leads to results with:
+
+1. under-reported random uncertainty
+    - inflated effect size
+    - low statistical power
+        - *P*(finding effect when present)
+        - but over-reported
+    
+## Ignoring measurement error has consequences
+But uncertainty often not propagated. Leads to results with:
+
+2. under-reported systematic uncertainty
+    - unacknowledged biases
+    - distorted results, systematic artefacts
+    - high false positive rate
+        - *P*(finding effect when none present)
+        - but under-reported
+<!--- } -->
+
+<!--- {Ignoring -->
+## Ignoring measurement error has consequences
+But uncertainty often not propagated. Leads to:
+
+::: incremental
+- high "false discovery rate"
+    - *P*(claiming to find effect when none present)
+- biased results in literature 
+- flawed meta-analyses
+- the "reproducibility crisis"
+:::
+<!--- } -->
+
+<!--- {Ignoring -->
+## The Reproducibility Crisis
+
+![\label{fig:Ioannidis2005} https://doi.org/10.1371/journal.pmed.0020124](images/Ioannidis2005.png)
+<!--- } -->
+
+<!--- {reproducibility crisis -->
+## *"Why most published research findings are false"*
+
+High "false discovery rates", often much higher than 5 %.
+
+In ecology, these stem from:
+
+- unpropagated measurement error
+- unacknowledged measurement bias
+- low prevalence of effects
+    - i.e. prior $P(\mathrm{effect})$ is small
+<!--- } -->
+
+# Understanding false discovery rates {background="#37a635"}
+
+## Covid testing    
+![](images/false_discovery_covid.png)
+    
+## Land use change from EO
+![](images/false_discovery_luc.png)
+
+## Generic experiments    
+![](images/false_discovery_expt_1.png)
+        
+## Generic experiments
+![](images/false_discovery_expt_2.png)
+        
+## Generic experiments: low power  
+![](images/false_discovery_expt_3.png)
+        
+## Experiments: low prevalence
+![](images/false_discovery_expt_4.png)
