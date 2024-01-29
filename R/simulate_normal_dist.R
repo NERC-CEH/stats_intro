@@ -46,6 +46,7 @@ p
 # left-skewed random numbers in range 0 to 1
 x <- rbeta(n = 10000, 2, 5)
 # rescale to range x_lower to x_upper
+x_lower <- 100; x_upper <- 200
 x <- x * (x_upper - x_lower) + x_lower
 hist(x)
 
@@ -75,7 +76,7 @@ p <- p + stat_function(fun = dnorm, args = list(mean = mean(x), sd = sd(x)))
 p
 
 # Try repeating with higher and lower values of n_numbers and n_sims, and different 
-# skewness parameters. e.g. n_numbers <- 10
+# skewness parameters. e.g. n_numbers <- 20; n_sims <- 100000
 
 
 # 3. What if we combine random numbers from different distribution?
