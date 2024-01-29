@@ -410,16 +410,6 @@ Peter Levy
 
   <p class="date">2024-01-29</p>
 </section>
-<section id="st-level-header-on-bright-green" class="title-slide slide level1 center" data-background="#37a635">
-<h1>1st level header on Bright Green</h1>
-
-</section>
-
-<section>
-<section id="st-level-header-on-teal" class="title-slide slide level1 center" data-background="#0383a4">
-<h1>1st level header on Teal</h1>
-
-</section>
 <section id="what-we-will-cover" class="slide level2 smaller">
 <h2>What we will cover</h2>
 <ul>
@@ -430,40 +420,35 @@ Peter Levy
 <li>Machine Learning - “statistics on steroids”</li>
 <li>the Bayesian mind meld.</li>
 </ul>
-</section></section>
+</section>
 <section>
 <section id="terminology" class="title-slide slide level1 center" data-background="#37a635">
 <h1>Terminology</h1>
 
 </section>
-<section id="confusion-is-normal" class="slide level2">
-<h2>Confusion is normal</h2>
-<div>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/confusion.png" width="650"></p>
-</figure>
-</div>
+<section id="the-main-problem-with-statistics" class="slide level2">
+<h2>The main problem with statistics</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Like learning to tell the time:</p>
 <ul>
-<li class="fragment">Get comfortable with confusion</li>
-<li class="fragment">Ask questions!</li>
+<li>“<em>A day is 24 hours: 12 in the day, 12 in the night.</em>”</li>
+<li>“<em>If the big hand points to One, that’s Five past.</em>”</li>
+<li>“<em>The third hand is the second hand.</em>”</li>
 </ul>
+</div><div class="column" style="width:50%;">
+<iframe data-external="1" src="https://www.youtube.com/embed/u5puzYBgaXM?t=147" height="200%" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</div>
 </div>
 </section>
-<section id="the-problem-with-statistics" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">The problem with statistics …</h2>
-<iframe data-external="1" src="https://www.youtube.com/embed/u5puzYBgaXM?t=64" width="100%" height="85%" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
-</section>
-<section id="science-and-models" class="slide level2">
-<h2>Science and Models</h2>
-<p>The core of the scientific process involves:</p>
+<section id="what-is-statistics" class="slide level2">
+<h2>What is “<em>Statistics</em>”?</h2>
+<p>Different uses of the word:</p>
 <ul>
-<li>formulating models of how the world works</li>
-<li>comparing with data to assess their validity</li>
-</ul>
-<p><strong>Inference</strong> is the process of estimating models, parameters, and their uncertainties, using data</p>
-<ul>
-<li>how we go from evidence to a&nbsp;conclusion</li>
+<li>reporting “states” - crop yield, unemployment, population size</li>
+<li>summarising information - mean, median, variability</li>
+<li>analysing data so as to draw conclusions</li>
+<li>applying probability theory to data</li>
 </ul>
 </section>
 <section id="terminology-1" class="slide level2">
@@ -484,23 +469,116 @@ Peter Levy
 </ul></li>
 </ul>
 </section>
+<section id="science-and-models" class="slide level2">
+<h2>Science and Models</h2>
+<p>The core of the scientific process involves:</p>
+<ul>
+<li>formulating models of how the world works</li>
+<li>comparing with data to assess their validity</li>
+</ul>
+<p><strong>Inference</strong> is the process of estimating models, parameters, and their uncertainties, using data</p>
+<ul>
+<li>how we go from evidence to a&nbsp;conclusion</li>
+</ul>
+</section>
+<section id="science-and-models-1" class="slide level2">
+<h2>Science and Models</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><em>Conditional probability</em> is the logic underpinning all science.</p>
+</div><div class="column" style="width:50%;">
+<p><img data-src="images/jaynes.png" style="width:100mm"></p>
+</div>
+</div>
+</section>
+<section id="not-about" class="slide level2">
+<h2><strong>Not</strong> about …</h2>
+<p>trying to remember which “test” to use when.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>t-test &amp; ANOVA</li>
+<li>regression</li>
+<li>General Linear Model</li>
+<li>Generalised Linear Model</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>mixed-effects models</li>
+<li>GLMMs</li>
+<li>GAMs</li>
+<li>kriging</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="some-concepts" class="slide level2">
+<h2>Some concepts</h2>
+<ul>
+<li>variability</li>
+<li>error - how far measurements or models are from the truth</li>
+<li>uncertainty - how precisely we know a quantity</li>
+</ul>
+<p>All can be represented as probability distributions.</p>
+</section>
 <section id="likelihood-and-probability" class="slide level2">
 <h2>Likelihood and probability</h2>
 <p>“<em>Likelihood</em>” and “<em>probability</em>” used interchangeably in common speech.</p>
 <p>Likelihood has a specific meaning in statistics:</p>
 <ul>
 <li>parameters have a likelihood:</li>
-<li><span class="math inline">\(L[\mu, \sigma] = P[\mathrm{data} | \mu, \sigma]\)</span></li>
 <li>equal to the probability of the data, given those parameters</li>
+<li><span class="math inline">\(L[\mu, \sigma] = P[\mathrm{data} | \mu, \sigma]\)</span></li>
 </ul>
+</section>
+<section id="confusion-is-normal" class="slide level2">
+<h2>Confusion is normal</h2>
+<div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/confusion.png" width="650"></p>
+</figure>
+</div>
+<ul>
+<li class="fragment">Get comfortable with confusion</li>
+<li class="fragment">Ask questions!</li>
+</ul>
+</div>
+</section>
+<section id="bayesian-methods-for-ecological-and-environmental-modelling" class="slide level2">
+<h2>Bayesian Methods for Ecological and Environmental Modelling</h2>
+<p>A 4-day course on applying conditional probability:</p>
+<p><a href="https://nerc-ceh.github.io/beem/">https://nerc-ceh.github.io/beem/</a></p>
 </section></section>
 <section>
 <section id="the-normal-distribution" class="title-slide slide level1 center" data-background="#37a635">
 <h1>The Normal Distribution</h1>
 
 </section>
-<section id="demonstrating-the-normal-distribution" class="slide level2">
-<h2>Demonstrating the Normal Distribution</h2>
+<section id="terminology-2" class="slide level2">
+<h2>Terminology</h2>
+<ul>
+<li>the Normal Distribution</li>
+<li>the Gaussian Distribution</li>
+<li>the Bell Curve</li>
+<li>the “Central Limit Theorem”
+<ul>
+<li>states conditions where things are “normal”</li>
+</ul></li>
+</ul>
+<p>All the same thing.</p>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+
+<img data-src="images/be-normal-tshirt.png" class="r-stretch"></section>
+<section id="practical" class="slide level2">
+<h2>Practical</h2>
+<p>Demonstrating where the Normal Distribution comes from.</p>
+<ul>
+<li>Go to: <a href="https://github.com/NERC-CEH/stats_intro/tree/master/R">https://github.com/NERC-CEH/stats_intro/tree/master/R</a></li>
+</ul>
+<p>Download raw file &amp; run: <code>R/simulate_normal_dist.R</code></p>
 <ul>
 <li>a function to average random numbers</li>
 </ul>
@@ -510,16 +588,33 @@ Peter Levy
 <span id="cb1-4"><a href="#cb1-4"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(random_numbers))</span>
 <span id="cb1-5"><a href="#cb1-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section" class="slide level2">
+<section id="section-1" class="slide level2">
 <h2></h2>
 <iframe data-external="1" src="https://www.youtube.com/embed/zeJD6dqJ5lo?t=113" width="100%" height="100%" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+</section>
+<section id="examples-of-the-normal-distribution" class="slide level2">
+<h2>Examples of the Normal Distribution</h2>
+<ul>
+<li>variability e.g.&nbsp;human height
+<ul>
+<li>sum of several factors affecting growth</li>
+</ul></li>
+<li>measurement error
+<ul>
+<li>sum of several errors affecting accuracy</li>
+</ul></li>
+<li>uncertainty
+<ul>
+<li>sum of several terms affecting accuracy</li>
+</ul></li>
+</ul>
 </section></section>
 <section>
 <section id="linear-regression-and-friends" class="title-slide slide level1 center" data-background="#37a635">
 <h1>Linear regression and friends</h1>
 
 </section>
-<section id="terminology-2" class="slide level2">
+<section id="terminology-3" class="slide level2">
 <h2>Terminology</h2>
 <ul>
 <li>Linear Regression</li>
@@ -536,7 +631,7 @@ Peter Levy
 <p>We want to predict one thing (<em>y</em>) on the basis of another (<em>x</em>)</p>
 </div>
 </section>
-<section id="terminology-3" class="slide level2">
+<section id="terminology-4" class="slide level2">
 <h2>Terminology</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
@@ -635,7 +730,7 @@ Peter Levy
 <li>Causal inference</li>
 </ul>
 </section>
-<section id="terminology-4" class="slide level2">
+<section id="terminology-5" class="slide level2">
 <h2>Terminology</h2>
 <p>Regression slopes <span class="math inline">\(\beta\)</span> are often referred to as <strong>effects</strong></p>
 <ul>
@@ -746,8 +841,8 @@ Peter Levy
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item" id="htmlwidget-38fbc0fc959a88a873db" style="width:384px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-38fbc0fc959a88a873db">{"x":{"diagram":"\ndigraph G {\n\tfontname=\"Helvetica,Arial,sans-serif\"\n\tnode [fontname=\"Helvetica,Arial,sans-serif\"]\n\tedge [fontname=\"Helvetica,Arial,sans-serif\"]\n\n\tsubgraph cluster_0 {\n\t\tnode [style=filled];\n\t\ta3;\n\t\tlabel = \"Observed\";\n\t\tcolor=blue\n\t}\n\n\tsubgraph cluster_1 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tb3 [dir=back];\n\t\tlabel = \"True \n(unobserved)\";\n\t}\n\n\tsubgraph cluster_2 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tc3;\n\t\tlabel = \"Error\";\n\t}\n  \n  a3[label = <Q<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  b3[label = \"Q\"];  \n  c3[label = <σ<FONT POINT-SIZE=\"8\"><SUB>Q<\/SUB><\/FONT>>];\n  \n\tb3 -> a3;\n\tc3 -> a3;\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-a86fcc309fe6fadb9e62" style="width:384px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-a86fcc309fe6fadb9e62">{"x":{"diagram":"\ndigraph G {\n\tfontname=\"Helvetica,Arial,sans-serif\"\n\tnode [fontname=\"Helvetica,Arial,sans-serif\"]\n\tedge [fontname=\"Helvetica,Arial,sans-serif\"]\n\n\tsubgraph cluster_0 {\n\t\tnode [style=filled];\n\t\ta3;\n\t\tlabel = \"Observed\";\n\t\tcolor=blue\n\t}\n\n\tsubgraph cluster_1 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tb3 [dir=back];\n\t\tlabel = \"True \n(unobserved)\";\n\t}\n\n\tsubgraph cluster_2 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tc3;\n\t\tlabel = \"Error\";\n\t}\n  \n  a3[label = <Q<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  b3[label = \"Q\"];  \n  c3[label = <σ<FONT POINT-SIZE=\"8\"><SUB>Q<\/SUB><\/FONT>>];\n  \n\tb3 -> a3;\n\tc3 -> a3;\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -769,8 +864,8 @@ Peter Levy
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item" id="htmlwidget-9042be0349c72ca0b4b5" style="width:384px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-9042be0349c72ca0b4b5">{"x":{"diagram":"\ndigraph G {\n\tfontname=\"Helvetica,Arial,sans-serif\"\n\tnode [fontname=\"Helvetica,Arial,sans-serif\"]\n\tedge [fontname=\"Helvetica,Arial,sans-serif\"]\n\n\tsubgraph cluster_0 {\n\t\tnode [style=filled];\n\t\ta2 -> a3 [style = \"dotted\", arrowhead = \"none\"];\n\t\tlabel = \"Observed\";\n\t\tcolor=blue\n\t}\n\n\tsubgraph cluster_1 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tb2 -> b3 [dir=back];\n\t\tlabel = \"True \n(unobserved)\";\n\t}\n\n\tsubgraph cluster_2 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tc2 -> c3 [style = \"invis\"];\n\t\tlabel = \"Error\";\n\t}\n  \n  a2[label = <h<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a3[label = <Q<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  \n  b2[label = \"h\"];\n  b3[label = \"Q\"];  \n\n  c2[label = <σ<FONT POINT-SIZE=\"8\"><SUB>h<\/SUB><\/FONT>>];\n  c3[label = <σ<FONT POINT-SIZE=\"8\"><SUB>Q<\/SUB><\/FONT>>];\n  \n\tb2 -> a2;\n\tc2 -> a2;\n\tb3 -> a3;\n\tc3 -> a3;\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-466df24f486cdd5d142c" style="width:384px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-466df24f486cdd5d142c">{"x":{"diagram":"\ndigraph G {\n\tfontname=\"Helvetica,Arial,sans-serif\"\n\tnode [fontname=\"Helvetica,Arial,sans-serif\"]\n\tedge [fontname=\"Helvetica,Arial,sans-serif\"]\n\n\tsubgraph cluster_0 {\n\t\tnode [style=filled];\n\t\ta2 -> a3 [style = \"dotted\", arrowhead = \"none\"];\n\t\tlabel = \"Observed\";\n\t\tcolor=blue\n\t}\n\n\tsubgraph cluster_1 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tb2 -> b3 [dir=back];\n\t\tlabel = \"True \n(unobserved)\";\n\t}\n\n\tsubgraph cluster_2 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tc2 -> c3 [style = \"invis\"];\n\t\tlabel = \"Error\";\n\t}\n  \n  a2[label = <h<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a3[label = <Q<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  \n  b2[label = \"h\"];\n  b3[label = \"Q\"];  \n\n  c2[label = <σ<FONT POINT-SIZE=\"8\"><SUB>h<\/SUB><\/FONT>>];\n  c3[label = <σ<FONT POINT-SIZE=\"8\"><SUB>Q<\/SUB><\/FONT>>];\n  \n\tb2 -> a2;\n\tc2 -> a2;\n\tb3 -> a3;\n\tc3 -> a3;\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -837,8 +932,8 @@ Q_{flow} = \beta_1 +&amp; \beta_2 (\beta_3 + \beta_4 (\beta_5 + \beta_6 (\beta_7
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<div class="grViz html-widget html-fill-item" id="htmlwidget-183a6874c8b591472d37" style="width:384px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-183a6874c8b591472d37">{"x":{"diagram":"\ndigraph G {\n\tfontname=\"Helvetica,Arial,sans-serif\"\n\tnode [fontname=\"Helvetica,Arial,sans-serif\"]\n\tedge [fontname=\"Helvetica,Arial,sans-serif\"]\n\n\tsubgraph cluster_0 {\n\t\tnode [style=filled];\n\t\ta0 -> a1 -> a2 -> a3 [style = \"dotted\", arrowhead = \"none\"];\n\t\tlabel = \"Observed\";\n\t\tcolor=blue\n\t}\n\n\tsubgraph cluster_1 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tb0 -> b1 -> b2 -> b3 [dir=back];\n\t\tlabel = \"True \n(unobserved)\";\n\t}\n\n\tsubgraph cluster_2 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tc0 -> c1 -> c2 -> c3 [style = \"invis\"];\n\t\tlabel = \"Error\";\n\t}\n  \n  a0[label = <V<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a1[label = <P<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a2[label = <h<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a3[label = <Q<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  \n  b0[label = \"V\"];\n  b1[label = \"P\"];\n  b2[label = \"h\"];\n  b3[label = \"Q\"];  \n\n  c0[label = <σ<FONT POINT-SIZE=\"8\"><SUB>V<\/SUB><\/FONT>>];\n  c1[label = <σ<FONT POINT-SIZE=\"8\"><SUB>P<\/SUB><\/FONT>>];\n  c2[label = <σ<FONT POINT-SIZE=\"8\"><SUB>h<\/SUB><\/FONT>>];\n  c3[label = <σ<FONT POINT-SIZE=\"8\"><SUB>Q<\/SUB><\/FONT>>];\n  \n\tb0 -> a0;\n\tc0 -> a0;\n\tb1 -> a1;\n\tc1 -> a1;\n\tb2 -> a2;\n\tc2 -> a2;\n\tb3 -> a3;\n\tc3 -> a3;\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item" id="htmlwidget-609f18cb196da739c406" style="width:384px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-609f18cb196da739c406">{"x":{"diagram":"\ndigraph G {\n\tfontname=\"Helvetica,Arial,sans-serif\"\n\tnode [fontname=\"Helvetica,Arial,sans-serif\"]\n\tedge [fontname=\"Helvetica,Arial,sans-serif\"]\n\n\tsubgraph cluster_0 {\n\t\tnode [style=filled];\n\t\ta0 -> a1 -> a2 -> a3 [style = \"dotted\", arrowhead = \"none\"];\n\t\tlabel = \"Observed\";\n\t\tcolor=blue\n\t}\n\n\tsubgraph cluster_1 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tb0 -> b1 -> b2 -> b3 [dir=back];\n\t\tlabel = \"True \n(unobserved)\";\n\t}\n\n\tsubgraph cluster_2 {\n\t\tstyle=filled;\n\t\tcolor=lightgrey;\n\t\tnode [style=filled,color=white];\n\t\tc0 -> c1 -> c2 -> c3 [style = \"invis\"];\n\t\tlabel = \"Error\";\n\t}\n  \n  a0[label = <V<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a1[label = <P<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a2[label = <h<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  a3[label = <Q<FONT POINT-SIZE=\"8\"><SUB>obs<\/SUB><\/FONT>>];\n  \n  b0[label = \"V\"];\n  b1[label = \"P\"];\n  b2[label = \"h\"];\n  b3[label = \"Q\"];  \n\n  c0[label = <σ<FONT POINT-SIZE=\"8\"><SUB>V<\/SUB><\/FONT>>];\n  c1[label = <σ<FONT POINT-SIZE=\"8\"><SUB>P<\/SUB><\/FONT>>];\n  c2[label = <σ<FONT POINT-SIZE=\"8\"><SUB>h<\/SUB><\/FONT>>];\n  c3[label = <σ<FONT POINT-SIZE=\"8\"><SUB>Q<\/SUB><\/FONT>>];\n  \n\tb0 -> a0;\n\tc0 -> a0;\n\tb1 -> a1;\n\tc1 -> a1;\n\tb2 -> a2;\n\tc2 -> a2;\n\tb3 -> a3;\n\tc3 -> a3;\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -958,9 +1053,14 @@ Q_{flow} = \beta_1 +&amp; \beta_2 (\beta_3 + \beta_4 (\beta_5 + \beta_6 (\beta_7
 <img data-src="images/false_discovery_expt_3.png" class="r-stretch"></section>
 <section id="experiments-low-prevalence" class="slide level2">
 <h2>Experiments: low prevalence</h2>
-<p><img data-src="images/false_discovery_expt_4.png"></p>
-<p><img src="images/logo/UKCEH-Logo_Short_Positive_RGB.png" class="slide-logo"></p>
-<div class="footer footer-default">
+
+<img data-src="images/false_discovery_expt_4.png" class="r-stretch"></section>
+<section id="practical-1" class="slide level2">
+<h2>Practical</h2>
+<p>Prove it to yourself:</p>
+<p><a href="https://nerc-ceh.github.io/beem/ae/ae-6a-measurements.html">https://nerc-ceh.github.io/beem/ae/ae-6a-measurements.html</a></p>
+
+<img src="images/logo/UKCEH-Logo_Short_Positive_RGB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 
 </div>
 </section></section>

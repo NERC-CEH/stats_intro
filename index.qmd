@@ -22,9 +22,6 @@ library(quarto)
 quarto_render("./index.qmd")
 ```
 
-# 1st level header on Bright Green {background="#37a635"}
-# 1st level header on Teal {background="#0383a4"}
-
 ## What we will cover {.smaller}
 - terminology
 - probability theory - why the normal distribution is "normal"
@@ -35,18 +32,39 @@ quarto_render("./index.qmd")
 
 # Terminology {background="#37a635"}
 
-## Confusion is normal
-::: incremental
-![](images/confusion.png){fig-align="center" width="650"}
+## The main problem with statistics
+::: columns
+::: {.column width="50%"}
+Like learning to tell the time:
 
-- Get comfortable with confusion
-- Ask questions!
+- "*A day is 24 hours: 12 in the day, 12 in the night.*"
+- "*If the big hand points to One, that's Five past.*"
+- "*The third hand is the second hand.*"
 :::
 
-## The problem with statistics ... {auto-animate="true"}
-{{< video https://youtu.be/u5puzYBgaXM?t=64 
- width="100%" height="85%"
+::: {.column width="50%"}
+{{< video https://youtu.be/u5puzYBgaXM?t=147 
+ height="200%"
 >}}
+:::
+:::
+
+## What is "*Statistics*"?
+Different uses of the word:
+
+- reporting "states" - crop yield, unemployment, population size
+- summarising information - mean, median, variability
+- analysing data so as to draw conclusions
+- applying probability theory to data
+
+## Terminology
+- hypothesis = a statement of how a system works
+    - e.g. CO$_2$ causes global warming
+- model = mathematical representation of how a system works
+    - e.g. Temperature = f(CO$_2$)
+- parameter = numerical constant within a model
+    - e.g. $T = \beta  CO_2$
+    - true value unknown, but estimated with uncertainty
 
 ## Science and Models
 The core of the scientific process involves:
@@ -58,14 +76,44 @@ The core of the scientific process involves:
 
 - how we go from evidence to a conclusion
 
-## Terminology
-- hypothesis = a statement of how a system works
-    - e.g. CO$_2$ causes global warming
-- model = mathematical representation of how a system works
-    - e.g. Temperature = f(CO$_2$)
-- parameter = numerical constant within a model
-    - e.g. $T = \beta  CO_2$
-    - true value unknown, but estimated with uncertainty
+## Science and Models
+::: columns
+::: {.column width="50%"}
+*Conditional probability* is the logic underpinning all science.
+:::
+
+::: {.column width="50%"}
+![](images/jaynes.png){width=100mm}
+:::
+:::
+
+## **Not** about ...
+trying to remember which "test" to use when.
+
+::: columns
+::: {.column width="50%"}
+- t-test & ANOVA
+- regression
+- General Linear Model
+- Generalised Linear Model
+:::
+
+::: {.column width="50%"}
+- mixed-effects models
+- GLMMs
+- GAMs
+- kriging
+:::
+:::
+
+## Some concepts
+- variability
+- error - how far measurements or models are from the truth
+- uncertainty - how precisely we know a quantity
+
+All can be represented as probability distributions.
+
+
 
 ## Likelihood and probability
 "*Likelihood*" and "*probability*" used interchangeably in common speech.
@@ -73,11 +121,44 @@ The core of the scientific process involves:
 Likelihood has a specific meaning in statistics:
 
 - parameters have a likelihood:
-- $L[\mu, \sigma] = P[\mathrm{data} | \mu, \sigma]$
 - equal to the probability of the data, given those parameters
+- $L[\mu, \sigma] = P[\mathrm{data} | \mu, \sigma]$
+
+
+## Confusion is normal
+::: incremental
+![](images/confusion.png){fig-align="center" width="650"}
+
+- Get comfortable with confusion
+- Ask questions!
+:::
+
+## Bayesian Methods for Ecological and Environmental Modelling
+A 4-day course on applying conditional probability:
+
+[https://nerc-ceh.github.io/beem/](https://nerc-ceh.github.io/beem/)
+
 
 # The Normal Distribution {background="#37a635"}
-## Demonstrating the Normal Distribution
+## Terminology
+- the Normal Distribution
+- the Gaussian Distribution
+- the Bell Curve
+- the "Central Limit Theorem"
+    - states conditions where things are "normal"
+    
+All the same thing.
+
+## 
+![](images/be-normal-tshirt.png)
+
+
+## Practical
+Demonstrating where the Normal Distribution comes from.
+
+- Go to: [https://github.com/NERC-CEH/stats_intro/tree/master/R](https://github.com/NERC-CEH/stats_intro/tree/master/R)
+
+Download raw file & run: `R/simulate_normal_dist.R`
 
 -   a function to average random numbers
 
@@ -95,6 +176,15 @@ average_random_numbers <- function(n_numbers, x_lower = 100, x_upper = 200) {
 {{< video https://youtu.be/zeJD6dqJ5lo?t=113 
  width="100%" height="100%"
 >}}
+
+## Examples of the Normal Distribution
+- variability e.g. human height
+    - sum of several factors affecting growth
+- measurement error
+    - sum of several errors affecting accuracy
+- uncertainty
+    - sum of several terms affecting accuracy
+
 
 # Linear regression and friends {background="#37a635"}
 
@@ -664,3 +754,9 @@ In ecology, these stem from:
         
 ## Experiments: low prevalence
 ![](images/false_discovery_expt_4.png)
+        
+## Practical
+
+Prove it to yourself:
+
+[https://nerc-ceh.github.io/beem/ae/ae-6a-measurements.html](https://nerc-ceh.github.io/beem/ae/ae-6a-measurements.html)
