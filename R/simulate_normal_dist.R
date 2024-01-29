@@ -13,7 +13,7 @@ library(ggplot2)
 x <- runif(n = 10000, min = 100, max = 200)
 hist(x)
 
-# function to add n uniform random_numbers between x_lower and x_upper
+# function to take an average of n uniform random_numbers between x_lower and x_upper
 average_random_numbers <- function(n_numbers, x_lower = 100, x_upper = 200) {
   random_numbers <- runif(n_numbers, x_lower, x_upper)
   return(mean(random_numbers))
