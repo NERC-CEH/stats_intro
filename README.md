@@ -1,6 +1,6 @@
-# ceh_quarto_slides
+# stats_intro slides
 
-Minimalist `R` Quarto theme for html presentations using UKCEH style/colours.
+`R` Quarto slides for html format presentation for CEH Data Day Intro to Statistics session.
 
 ## Example Title Slide
 
@@ -8,13 +8,14 @@ Here is the title slide:
 
 ![](images/title.png)
 
-## Full Example Presentation
+## Full Presentation via GitHub Pages
 
-Example presentation at [https://nerc-ceh.github.io/ceh_quarto_slides]( https://nerc-ceh.github.io/ceh_quarto_slides/). 
+Example presentation at [https://nerc-ceh.github.io/stats_intro/](https://nerc-ceh.github.io/stats_intro/). 
 
 ## Usage
+This presentation is based on the CEH Quarto template at [https://nerc-ceh.github.io/ceh_quarto_slides/](https://nerc-ceh.github.io/ceh_quarto_slides/). 
 
-just fork this and edit the front-matter YAML at the start of your Rmd file containing your presentation.
+Just fork that and edit the front-matter YAML at the start of your .Rmd or .qmd file containing your presentation.
 
 
 ```
